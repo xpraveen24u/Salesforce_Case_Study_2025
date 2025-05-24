@@ -1,0 +1,75 @@
+<template>
+    <lightning-card title="Record Viewer">
+        <div class="slds-p-horizontal_medium">
+            <lightning-combobox name="recordType" label="Select Object" value={selectedObject} options={objectOptions}
+                onchange={handleChange}>
+            </lightning-combobox>
+            <template if:true={showForm}>
+                <lightning-input field-name="Name" value={recordName} label="Record Name" class="slds-m-top_small"
+                    onchange={handleNameFieldChange}>
+                </lightning-input>
+            </template>
+            <template if:true={showWebsiteField}>
+                <lightning-input field-name="Website" value={recordWebsite} label="Website" class="slds-m-top_small"
+                    onchange={handleWebsiteFieldChange}>
+                </lightning-input>
+            </template>
+            <template if:true={showPhoneField}>
+                <lightning-input field-name="First Name" value={recordFirstName} label="First Name"
+                    class="slds-m-top_small" onchange={handleFirstNameFieldChange}>
+                </lightning-input>
+                <lightning-input field-name="Last Name" value={recordLastName} label="Last Name" required="true"
+                    class="slds-m-top_small" onchange={handleLastNameFieldChange}>
+                </lightning-input>
+                <lightning-input field-name="Phone" value={recordPhone} label="Phone" class="slds-m-top_small"
+                    onchange={handlePhoneFieldChange}>
+                </lightning-input>
+            </template>
+            <template if:true={showAmountField}>
+                <lightning-input field-name="Amount" value={recordAmount} label="Amount" class="slds-m-top_small"
+                    onchange={handleAmountFieldChange}>
+                </lightning-input>
+                <lightning-combobox name="StageName" label="Stage" required="true" value={stageField}
+                    options={stageOptions} onchange={handleStageFieldChange}>
+                </lightning-combobox>
+                <lightning-input field-name="CloseDate" value={recordCloseDate} label="Close Date" required="true"
+                    type="date" class="slds-m-top_small" onchange={handleCloseDateFieldChange}>
+                </lightning-input>
+            </template>
+            <lightning-button label="Submit" onclick={handleSubmit} class="slds-m-top_small"></lightning-button>
+        </div>
+
+        <template if:true={records}>
+            <div class="slds-p-horizontal_medium slds-m-top_medium">
+                <lightning-accordion allow-multiple-sections-open>
+                    <template for:each={records} for:item="record">
+                        <template if:false={record.accessible}>
+                            <lightning-icon key={record.Id} icon-name="utility:lock" alternative-text="Restricted"
+                                size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+                        </template>
+                        <template if:true={record.accessible}>
+                            <lightning-accordion-section name={record.Name} label={record.Name} key={record.Id}>
+                                <ul class="slds-list_dotted slds-m-top_small">
+                                    <li><strong>Owner:</strong> {record.Owner}</li>
+                                    <li><strong>Created By:</strong> {record.CreatedBy}</li>
+                                    <li><strong>Last Modified By:</strong> {record.LastModifiedBy}</li>
+                                    <li><strong>Created Date:</strong> {record.CreatedDate}</li>
+                                    <li><strong>Last Modified Date:</strong> {record.LastModifiedDate}</li>
+                                    <template if:true={record.Website}>
+                                        <li><strong>Website:</strong> {record.Website}</li>
+                                    </template>
+                                    <template if:true={record.Phone}>
+                                        <li><strong>Phone:</strong> {record.Phone}</li>
+                                    </template>
+                                    <template if:true={record.Amount}>
+                                        <li><strong>Amount:</strong> {record.Amount}</li>
+                                    </template>
+                                </ul>
+                            </lightning-accordion-section>
+                        </template>
+                    </template>
+                </lightning-accordion>
+            </div>
+        </template>
+    </lightning-card>
+</template>
